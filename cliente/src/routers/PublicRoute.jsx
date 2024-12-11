@@ -4,9 +4,9 @@ import useAuth from '../auth/useAuth';
 
 export default function Public({ element, ...rest}) {
 
-  const { user } = useAuth();
+  const { isLogged } = useAuth();
 
-  if(user){
+  if(isLogged()){
     return <Navigate to="/projects" replace/>
   }
 

@@ -1,17 +1,18 @@
 import React from 'react'
-import { Route, Navigate } from 'react-router-dom'
+import { Route, Navigate, useLocation } from 'react-router-dom'
 import useAuth from '../auth/useAuth';
+import routes from '../helpers/routes';
 
 export default function PrivateRoute({ hasRole: role, element, ...rest}) {
+  const location = useLocation();
+  const { hasRole, isLogged } = useAuth();
 
-  const { user } = useAuth();
-
-  if(role && user?.role !== role){
-    return <Navigate to="/" replace />
+  if(role && !hasRole(role)){
+    return <Navigate to={routes.home} replace />
   } 
 
-  if(!user){
-    return <Navigate to="/login" replace/>
+  if(!isLogged()){
+    return <Navigate to={routes.login} state={{ from: location }} replace/>
   }
 
   return element;
